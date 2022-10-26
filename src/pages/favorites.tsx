@@ -1,14 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import { PokemonType } from '~/domain/shared/pokemon';
 import { getStorage } from '~/services/storage';
 import storageKeys from '~/services/storage/keys';
 
-interface Pokemon {
-  name: string;
-  img: string;
-  id: string;
-}
+type Pokemon = Pick<PokemonType, 'id' | 'name' | 'img'>;
 
 export function Favorites() {
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
@@ -17,6 +14,7 @@ export function Favorites() {
     const arrayOfPokemons: Pokemon[] = getStorage(
       storageKeys.favoritesPokemons,
     );
+
     const mappedArray = arrayOfPokemons.map((pokemon) => ({
       name: pokemon.name,
       img: pokemon.img,
@@ -33,7 +31,7 @@ export function Favorites() {
           <Link
             key={pokemon.id}
             to={`/${pokemon?.id}`}
-            className="py-8 px-6 bg-stone-100 border border-yellow-500 rounded flex flex-col items-center justify-center gap-4 text-xl text-stone-700"
+            className="py-8 px-6 bg-stone-100 border border-blue-800 rounded flex flex-col items-center justify-center gap-4 text-xl text-stone-700"
           >
             <img src={pokemon?.img} alt="" className="w-44" />
             {pokemon &&
