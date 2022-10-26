@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { Toaster } from 'react-hot-toast';
 
 import { Routes } from './routes';
 
@@ -17,5 +18,10 @@ export function App() {
     }
   }, []);
 
-  return <Routes />;
+  return (
+    <>
+      <Routes />
+      <Toaster position="top-right" reverseOrder={false} />
+    </>
+  );
 }
