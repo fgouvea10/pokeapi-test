@@ -1,27 +1,17 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { Heart } from 'phosphor-react';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import toast from 'react-hot-toast';
+
+import pokemonIconImg from '~/assets/pokemon-icon.png';
 
 import { getStorage, setStorage } from '~/services/storage';
 import storageKeys from '~/services/storage/keys';
-import { getPokemonById } from '~/services/useCases/get-pokemon-by-id';
-
-interface Pokemon {
-  id: string;
-  name: string;
-  img: string;
-  species: string;
-  stats: Array<{
-    base_stat: number;
-    stat: {
-      name: string;
-    };
-  }>;
-}
+import { getPokemonById } from '~/services/use-cases/get-pokemon-by-id';
+import type { PokemonType as Pokemon } from '~/domain/shared/pokemon';
 
 export function PokemonDetails() {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const [isFetchingPokemon, setIsFetchingPokemon] = useState(false);
   const [pokemonDetails, setPokemonDetails] = useState<Pokemon>();
@@ -33,7 +23,8 @@ export function PokemonDetails() {
       (item: Pokemon) => item.id === pokemon.id,
     );
 
-    if (pokemonAlreadyExists) return;
+    if (pokemonAlreadyExists)
+      return toast.error(`${pokemon?.name} is already on favorites`);
 
     console.log(pokemonsInStorage);
     pokemonsInStorage.push(pokemon);
@@ -41,6 +32,7 @@ export function PokemonDetails() {
       storageKeys.favoritesPokemons,
       JSON.stringify(pokemonsInStorage),
     );
+    toast.success(`${pokemon?.name} added to favorites`);
   };
 
   const getPokemonDetails = async () => {
@@ -58,7 +50,7 @@ export function PokemonDetails() {
       };
       setPokemonDetails(mappedBody);
     } catch (err) {
-      // console.log('err', err);
+      navigate('/');
     } finally {
       setIsFetchingPokemon(false);
     }
@@ -78,10 +70,10 @@ export function PokemonDetails() {
 
   return (
     <div className="w-full ax-w-6xl my-12 mx-auto p-4">
-      <div className="flex items-center justify-center gap-8">
+      <div className="flex flex-col md:flex-row items-center justify-center gap-8">
         <img src={pokemonDetails?.img} className="w-96 h-auto" />
         <div>
-          <div className="flex items-center justify-between">
+          <div className="flex w-full items-center justify-between md:w-auto md:text-center">
             <div>
               <h1 className="text-4xl font-medium">{pokemonDetails?.name}</h1>
               <span className="text-xs">Specie: {pokemonDetails?.species}</span>
@@ -94,7 +86,7 @@ export function PokemonDetails() {
                 handleAddPokemonToFavorites(pokemonDetails as Pokemon)
               }
             >
-              <Heart size={30} className="text-blue-700" fill="blue" />
+              <img src={pokemonIconImg} alt="" className="w-8 h-auto" />
             </button>
           </div>
           <div className="grid grid-cols-3 gap-2 mt-6">
@@ -106,34 +98,6 @@ export function PokemonDetails() {
                 <span className="block text-center">{detail?.base_stat}</span>
               </div>
             ))}
-            {/* <div className="bg-stone-200 p-4 rounded">
-              <strong className="block text-center">Species</strong>
-              <span className="block text-center">
-                {pokemonDetails?.species}
-              </span>
-            </div>
-            <div className="bg-stone-200 p-4 rounded">
-              <strong className="block text-center">Experience</strong>
-              <span className="block text-center">
-                {pokemonDetails?.experience}
-              </span>
-            </div>
-            <div className="bg-stone-200 p-4 rounded">
-              <strong className="block text-center">Height</strong>
-              <span className="block text-center">
-                {pokemonDetails?.height}
-              </span>
-            </div>
-            <div className="bg-stone-200 p-4 rounded">
-              <strong className="block text-center">Order</strong>
-              <span className="block text-center">{pokemonDetails?.order}</span>
-            </div>
-            <div className="bg-stone-200 p-4 rounded">
-              <strong className="block text-center">Weight</strong>
-              <span className="block text-center">
-                {pokemonDetails?.weight}
-              </span>
-            </div> */}
           </div>
         </div>
       </div>
