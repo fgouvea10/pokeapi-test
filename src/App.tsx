@@ -1,6 +1,7 @@
-import { Home } from './pages/home';
+import { Routes } from './routes';
+
 import './styles/global.css';
 
 export function App() {
-  return <Home />;
+  return <Routes />;
 }
