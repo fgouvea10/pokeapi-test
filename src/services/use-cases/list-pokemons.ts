@@ -7,3 +7,5 @@ export async function getPokemons(offset = 0, perPage = 10) {
 
   return response.data;
 }
+
+// list of pokemons with custom pagination

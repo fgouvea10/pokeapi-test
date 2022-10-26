@@ -19,7 +19,10 @@ interface Pokemon {
 const POKEMONS_PER_PAGE = 9;
 
 export function Home() {
-  const [page, setPage] = useState(1);
+  const startPage = 1;
+  // avoiding magic numbers
+
+  const [page, setPage] = useState(startPage);
   const [pokemons, setPokemons] = useState<Pokemon>();
   const [pokemonsInStorage, setPokemonsInStorage] = useState<PokemonType[]>([]);
 
@@ -60,6 +63,7 @@ export function Home() {
           const favoritePokemons = pokemonsInStorage.find(
             (item) => item.name === pokemon.name,
           );
+          // restoring favorite pokemons
 
           return (
             <PokemonCard

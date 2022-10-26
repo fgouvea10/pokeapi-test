@@ -6,6 +6,7 @@ import { getStorage } from '~/services/storage';
 import storageKeys from '~/services/storage/keys';
 
 type Pokemon = Pick<PokemonType, 'id' | 'name' | 'img'>;
+// using typescript utility types to create a new interface from another
 
 export function Favorites() {
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
@@ -15,11 +16,15 @@ export function Favorites() {
       storageKeys.favoritesPokemons,
     );
 
+    // get pokemons in storage
+
     const mappedArray = arrayOfPokemons.map((pokemon) => ({
       name: pokemon.name,
       img: pokemon.img,
       id: pokemon.id,
     }));
+
+    // mapping according to the typing structure
 
     setPokemons(mappedArray);
   }, []);

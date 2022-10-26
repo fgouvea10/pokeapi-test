@@ -9,7 +9,7 @@ import storageKeys from './services/storage/keys';
 import './styles/global.css';
 
 export function App() {
-  // create array of pokemons if does not exists one in storage
+  // create array of pokemons if does not exists in storage
   useEffect(() => {
     const pokemonsInStorage = getStorage(storageKeys.favoritesPokemons);
     if (pokemonsInStorage === null) {

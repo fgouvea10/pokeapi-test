@@ -7,3 +7,5 @@ export namespace GetPokemonData {
     };
   };
 }
+
+// create protocol of pokemon data

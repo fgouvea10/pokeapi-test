@@ -10,22 +10,26 @@ import { getPokemonById } from '~/services/use-cases/get-pokemon-by-id';
 import type { PokemonType as Pokemon } from '~/domain/shared/pokemon';
 
 export function PokemonDetails() {
-  const { id } = useParams();
+  const { id } = useParams(); // get old route id
   const navigate = useNavigate();
 
   const [isFetchingPokemon, setIsFetchingPokemon] = useState(false);
   const [pokemonDetails, setPokemonDetails] = useState<Pokemon>();
 
   const handleAddPokemonToFavorites = (pokemon: Pokemon) => {
+    // get pokemons in storage
     const pokemonsInStorage = getStorage(storageKeys.favoritesPokemons);
 
+    // checking if pokemon is already favorited
     const pokemonAlreadyExists = pokemonsInStorage.find(
       (item: Pokemon) => item.id === pokemon.id,
     );
 
+    // returning custom error message
     if (pokemonAlreadyExists)
       return toast.error(`${pokemon?.name} is already on favorites`);
 
+    // saving pokemon in storage and add custom message
     console.log(pokemonsInStorage);
     pokemonsInStorage.push(pokemon);
     setStorage(
@@ -41,6 +45,7 @@ export function PokemonDetails() {
     try {
       const response = await getPokemonById(id as string);
 
+      // mapping the data that matters
       const mappedBody = {
         id: response?.id,
         name: response?.name,
@@ -50,6 +55,7 @@ export function PokemonDetails() {
       };
       setPokemonDetails(mappedBody);
     } catch (err) {
+      // redirecting to home in case of errors by the api
       navigate('/');
     } finally {
       setIsFetchingPokemon(false);
@@ -58,11 +64,13 @@ export function PokemonDetails() {
 
   useEffect(() => {
     if (id) {
+      // checking if id is ready to fetch data
       getPokemonDetails();
     }
   }, [id]);
 
   useEffect(() => {
+    // change the title of the page
     document.title = `${pokemonDetails?.name} - PokeAPI`;
   }, [id]);
 

@@ -14,8 +14,11 @@ import { NotFound } from '~/pages/not-found';
 export function Routes() {
   return (
     <BrowserRouter>
+      {/* routing provider */}
       <Header />
+      {/* application header */}
       <ReactRouterRoutes>
+        {/* base application routes */}
         <Route index element={<Home />} />
         <Route path="/:id" element={<PokemonDetails />} />
         <Route path="/favorites" element={<Favorites />} />
