@@ -39,7 +39,7 @@ function PaginationItem({
   if (isCurrent) {
     return (
       <button
-        className="py-2 px-3 leading-tight text-white bg-yellow-500 border border-yellow-500"
+        className="py-2 px-3 leading-tight text-white bg-blue-700 border border-blue-700"
         onClick={() => onPageChange(number)}
       >
         {number}
