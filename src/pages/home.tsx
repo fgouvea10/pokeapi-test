@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
 
-import { getPokemons } from '~/services/useCases/list-pokemons';
+import { getPokemons } from '~/services/use-cases/list-pokemons';
+import storageKeys from '~/services/storage/keys';
 
 import { PokemonCard } from '~/components/shared/cards/pokemon-card';
 import { Pagination } from '~/components/shared/navigation/pagination';
+import { getStorage } from '~/services/storage';
+import type { PokemonType } from '~/domain/shared/pokemon';
 
 interface Pokemon {
   count: number;
@@ -18,6 +21,7 @@ const POKEMONS_PER_PAGE = 9;
 export function Home() {
   const [page, setPage] = useState(1);
   const [pokemons, setPokemons] = useState<Pokemon>();
+  const [pokemonsInStorage, setPokemonsInStorage] = useState<PokemonType[]>([]);
 
   const totalOfPages = pokemons && pokemons?.count / POKEMONS_PER_PAGE;
 
@@ -33,7 +37,13 @@ export function Home() {
     }
   };
 
-  console.log(pokemons);
+  useEffect(() => {
+    const pokemonsInStorage = getStorage(storageKeys.favoritesPokemons);
+    if (pokemonsInStorage?.length > 0) {
+      setPokemonsInStorage(pokemonsInStorage);
+      return;
+    }
+  }, [pokemonsInStorage]);
 
   useEffect(() => {
     listPokemons();
@@ -47,14 +57,20 @@ export function Home() {
     <div className="w-full max-w-6xl my-12 mx-auto p-4">
       <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {pokemons?.results?.map((pokemon, index) => {
-          return <PokemonCard key={index} pokemon={pokemon} />;
+          const favoritePokemons = pokemonsInStorage.find(
+            (item) => item.name === pokemon.name,
+          );
+
+          return (
+            <PokemonCard
+              key={index}
+              pokemon={pokemon}
+              isFavorite={!!favoritePokemons}
+            />
+          );
         })}
       </div>
-      <div className="w-full mt-8 flex items-center justify-between">
-        <div>
-          <strong>{POKEMONS_PER_PAGE}</strong> -{' '}
-          <strong>{POKEMONS_PER_PAGE}</strong> de <strong>totalCount</strong>
-        </div>
+      <div className="w-full mt-8 flex items-center justify-center">
         <Pagination
           totalCountOfRegisters={totalOfPages as number}
           currentPage={page}
