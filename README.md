@@ -4,11 +4,12 @@ This project is using React with Vite.
 Pokeapi is a RESTFUL API.
 
 ## Technologies used:
-- React
-- Vite
-- Typescript
-- Axios
-- TailwindCSS
+- Node.js (v13)
+- React (v18)
+- Vite (v3)
+- Typescript (v4)
+- Axios (v1.1.3)
+- TailwindCSS (v3.2.1)
 
 ## Requirements
 You must have Node.js installed on your machine to run this application.
