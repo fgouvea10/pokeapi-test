@@ -84,7 +84,7 @@ export function Pagination({
             Math.min(currentPage + SIBILINGS_COUNT, lastPage),
           )
         : [],
-    [currentPage],
+    [currentPage, lastPage],
   );
 
   // 1... 4 5 6 ... 20
