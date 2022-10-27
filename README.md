@@ -1,6 +1,6 @@
 # Bee Engineering - Pokemon API Challenge
 This is a code challenge proposed by Bee Engineering. The intention was to consume the pokeapi api.
-This project is using React with Vite.
+This project is using React with [Vite](https://vitejs.dev/) (a buildtool that replaces webpack).
 Pokeapi is a RESTFUL API.
 
 ## Technologies used:
