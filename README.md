@@ -36,6 +36,8 @@ Run
   npm run dev
 ```
 
+The project will be running on address http://localhost:5173/
+
 ## Functional requirements:
 [x] The user should be able to see a main screen with a list of all Pokémons (with
 corresponding name and image for each of them).<br />
