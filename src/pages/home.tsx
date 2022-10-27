@@ -9,6 +9,7 @@ import { getStorage } from '~/services/storage';
 import type { PokemonType } from '~/domain/shared/pokemon';
 
 interface Pokemon {
+  // expected interface from api response
   count: number;
   results: Array<{
     name: string;
@@ -22,7 +23,7 @@ export function Home() {
   const startPage = 1;
   // avoiding magic numbers
 
-  const [page, setPage] = useState(startPage);
+  const [page, setPage] = useState(startPage); // start the page
   const [pokemons, setPokemons] = useState<Pokemon>();
   const [pokemonsInStorage, setPokemonsInStorage] = useState<PokemonType[]>([]);
 
@@ -41,9 +42,9 @@ export function Home() {
   };
 
   useEffect(() => {
-    const pokemonsInStorage = getStorage(storageKeys.favoritesPokemons);
+    const pokemonsInStorage = getStorage(storageKeys.favoritesPokemons); // get pokemons in storage
     if (pokemonsInStorage?.length > 0) {
-      setPokemonsInStorage(pokemonsInStorage);
+      setPokemonsInStorage(pokemonsInStorage); // putting the value in a state to show the favorites on the home
       return;
     }
   }, [pokemonsInStorage]);
@@ -80,6 +81,7 @@ export function Home() {
           currentPage={page}
           onPageChange={setPage}
         />
+        {/* custom pagination component */}
       </div>
     </div>
   );
